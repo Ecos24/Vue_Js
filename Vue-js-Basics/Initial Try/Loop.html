@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Vue 3 Basic learning</title>
+        <style>
+            .box {
+                background-color: aqua;
+                height: 150px;
+                width: 150px;
+            }
+            .box.two {
+                background-color: blueviolet;
+            }
+            .box.three {
+                background-color: tomato;
+            }
+            [v-cloak] {
+                display: none;
+            }
+            input {
+                margin: 10px;
+                display: block;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app" v-cloak>
+            
+            <mycustom-form></mycustom-form>
+
+            {{ greeting }}
+            <input @keydown.enter="greet(greetingInput)" v-model="greetingInput" />
+
+            <hr/>
+
+            <button v-on:click = "isVisible = !isVisible"> Toggle Box 1 </button>
+            <button @click = "togglebox2()"> Toggle Box 2 </button>
+
+            <div v-if="isVisible" class="box"></div>
+            <div v-else-if="isVisible2" class="box two"></div>
+            <div v-else class="box three"></div>
+        </div>
+        <!-- Scripts -->        
+        <script src="https://unpkg.com/vue@3"></script>
+        <script>
+            let app = Vue.createApp({
+                data: function() {
+                    return {
+                        greeting: 'Hello from Divyang!!!',
+                        greetingInput: null,
+                        isVisible: false,
+                        isVisible2: true
+                    }
+                },
+                methods: {
+                    togglebox2: function() {
+                        this.isVisible2 = !this.isVisible2;
+                    },
+                    greet(Input) {
+                        this.greeting = Input;
+                        console.log('Updated greeting message');
+                    }
+                }
+            })
+
+            app.component('mycustom-form', {
+                template: `
+                            <form @submit.prevent="formSubmitted()">
+                                <h1>{{ title }}</h1>
+                                <p v-for="(str, i) in inputsLoopSample" :key="i">{{ i+1 }} - {{ str }}</p>
+                                <mycustom-input
+                                    v-for="(input, i) in inputs" :key="i"
+                                    v-model="input.value"
+                                    v-bind:inputLabel="input.label"
+                                    :inputType="input.type"/>
+                                <button> Login </button>
+                            </form>
+                        `,
+                data() {
+                    return {
+                        title: 'Login Form',
+                        inputsLoopSample: [
+                            'email',
+                            'password',
+                            'name'
+                        ],
+                        inputs: [
+                            {
+                                label: 'Email',
+                                value: '',
+                                type: 'email'
+                            },
+                            {
+                                label: 'Password',
+                                value: '',
+                                type: 'password'
+                            }
+                        ]
+                    }
+                },
+                methods: {
+                    formSubmitted() {
+                        console.log(this.inputs[0].value, ' ', this.inputs[1].value);
+                    }
+                },
+                components: ['mycustom-input']
+            })
+
+            app.component('mycustom-input', {
+                template: `
+                            <label>
+                                {{ inputLabel }}
+                                <input :type="inputType" v-model="inputValue" />
+                            </label>
+                        `,
+                props: ['inputLabel', 'inputType', 'modelValue'],
+                computed: {
+                    inputValue: {
+                        get() {
+                            return this.modelValue;
+                        },
+                        set(value) {
+                            this.$emit('update:modelValue', value);
+                        }
+                    }
+                }
+            })
+
+            app.mount('#app')
+        </script>
+    </body>
+</html>

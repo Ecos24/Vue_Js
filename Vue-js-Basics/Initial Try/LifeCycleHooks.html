@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Vue 3 Basic learning</title>
+        <style>
+            .box {
+                background-color: blueviolet;
+                height: 150px;
+                width: 150px;
+            }
+            [v-cloak] {
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app" v-cloak>
+            <button @click = "togglebox()"> Toggle </button>
+            <test-box v-if="isVisible"></div>
+        </div>
+        <!-- Scripts -->        
+        <script src="https://unpkg.com/vue@3"></script>
+        <script>
+            let app = Vue.createApp({
+                data: function() {
+                    return {
+                        isVisible: false
+                    }
+                },
+                methods: {
+                    togglebox: function() {
+                        this.isVisible = !this.isVisible;
+                    }
+                },
+                beforeUpdate() {
+                    console.log('Updating main Component');
+                },
+                updated() {
+                    console.log('Main Component Updated');
+                }
+            })
+
+            app.component('test-box', {
+                template: `
+                    <div class="box"></div>
+                `,
+                beforeCreate() {
+                    console.log('Creating Component');
+                },
+                created() {
+                    console.log('Component Created');
+                },
+                beforeMount() {
+                    console.log('Mounting Component');
+                },
+                mounted() {
+                    console.log('Component Mounted');
+                },
+                beforeUnmount() {
+                    console.log('Unmounting Component');
+                },
+                unmounted() {
+                    console.log('Component Unmounted');
+                }
+            })
+
+            app.mount('#app')
+        </script>
+    </body>
+</html>
