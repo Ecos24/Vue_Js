@@ -19,14 +19,30 @@
     <section id="events">
       <h2>Events in Action</h2>
       <button v-on:click="addCounter(5)">Add 5</button>
-      <button v-on:click="reduceCounter(5)">Reduce 5</button>
+      <button
+        v-on:click.right="reduceCounter(10)"
+        v-on:click="reduceCounter(5)"
+      >
+        Reduce 5
+      </button>
+      <p v-once>Starting Counter: {{ counter }}</p>
       <p>Result: {{ counter }}</p>
-      <input type="text" v-on:input="updateName" />
+      <!--
+      <input type="text" v-bind:value="name" v-on:input="updateName" />
+      <button v-on:click="ResetInput">Reset</button>
+      <br/><br/>       -->
+      <p>Your Full Name: {{ fullName }}</p>
+      <input type="text" v-model="name" />
+      <input type="text" v-model="lastName" />
+      <button v-on:click="ResetInput">Reset</button>
       <p>Your Name: {{ name }}</p>
-      <input type="text" v-on:input="updateWithLastName($event, 'Tyagi')" />
+      <input
+        type="text"
+        v-on:keyup.enter="updateWithLastName($event, 'Tyagi')"
+      />
       <p>Your Name: {{ nameLast }}</p>
-      <form v-on:submit="Register">
-        <input type="text">
+      <form v-on:submit.prevent="Register">
+        <input type="text" />
         <button>Register</button>
       </form>
     </section>
