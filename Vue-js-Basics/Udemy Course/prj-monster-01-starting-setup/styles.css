@@ -114,6 +114,10 @@ button:disabled {
   color: red;
 }
 
+.log--heavydamage {
+  color: #88005b;
+}
+
 .log--heal {
   color: green;
 }
